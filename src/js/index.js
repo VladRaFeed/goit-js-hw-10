@@ -1,5 +1,4 @@
 import { fetchBreeds, fetchCatBreed } from "./cat-api"
-import SlimSelect from 'slim-select'
 
 const catInfo = document.querySelector('.cat-info')
 const selector = document.querySelector('.breed-select')
