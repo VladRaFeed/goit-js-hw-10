@@ -8,7 +8,13 @@ error.style.display = 'none';
 
 selector.addEventListener('change', reloadInfo)
 
-function breedsInfo(breeds) {
+fetchBreeds().then(showBreedsInfo).catch(error => {
+    console.log(error)
+    showError()
+})
+
+
+function showBreedsInfo(breeds) {
     breeds.forEach(breed => {
         const option = document.createElement('option')
         option.value = breed.id;
@@ -18,7 +24,10 @@ function breedsInfo(breeds) {
     });
 
     fetchCatBreed(breeds[0].id)
-        .then(markupCat)
+        .then(() => {
+            addMarkupCat
+            hideLoader()
+        })
         .catch(error => {
     console.log(error)
     showError()
@@ -26,9 +35,7 @@ function breedsInfo(breeds) {
 
 }
 
-function markupCat(cat) {
-
-    hideLoader()
+function addMarkupCat(cat) {
 
     catInfo.innerHTML = `
         <img src="${cat[0].url}" alt="${cat[0].breeds[0].name}"></img>
@@ -38,15 +45,10 @@ function markupCat(cat) {
     `
 }
 
-fetchBreeds().then(breedsInfo).catch(error => {
-    console.log(error)
-    showError()
-})
-
 function reloadInfo(e) {
     showLoader()
     catInfo.innerHTML = ""
-    fetchCatBreed(e.target.value).then(markupCat).catch(error => {
+    fetchCatBreed(e.target.value).then(addMarkupCat).catch(error => {
     console.log(error)
     showError()
     
